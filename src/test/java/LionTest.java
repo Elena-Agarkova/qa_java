@@ -9,31 +9,39 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.assertThrows;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LionTest {
 
     @Mock
-    Feline feline;
+    private Feline feline;
 
     @Test
-    public void testGetKittens() throws Exception {
-        Lion lion = new Lion("Самец", new Feline());
-        int kittens = lion.getKittens();
-        // Проверяем, что значение kittens равно 1
-        assertEquals(1, kittens);
+    public void getKittens() throws Exception {
+        Lion lion = new Lion("Самка", feline);
+        Mockito.when(feline.getKittens()).thenReturn(1);
+        int expected = 1;
+
+        assertEquals("Неправильный факт.результат для метода getKittens", expected, lion.getKittens());
     }
 
     @Test
-    public void testEatMeat() throws Exception {
+    public void hasManeWithException() {
+        Exception exception = assertThrows(Exception.class, () -> {
+            Lion lion = new Lion("Incorrect", feline);
+        });
+        String expected = "Используйте допустимые значения пола животного - самей или самка";
+
+        assertEquals("Ошибка: недопустимые значения пола животного", expected, exception.getMessage());
+    }
+
+    @Test
+    public void getFood() throws Exception {
         Lion lion = new Lion("Самец", feline);
+        Mockito.when(feline.getFood("Хищник")).thenReturn(List.of("Животные", "Птицы", "Рыба"));
+        List<String> expected = List.of("Животные", "Птицы", "Рыба");
 
-        List<String> mealList = List.of("Животные", "Птицы", "Рыба");
-        Mockito.when(feline.getFood("Хищник")).thenReturn(mealList);
-
-        List<String> food = lion.getFood();
-        // Проверяем, что список еды содержит ожидаемые значения
-        assertEquals(food, mealList);
+        assertEquals("Ошибка: ФР не соответствует ОР", expected, lion.getFood());
     }
 }

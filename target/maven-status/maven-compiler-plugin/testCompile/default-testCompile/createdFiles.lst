@@ -1,5 +1,7 @@
 CatTest.class
 LionTest.class
-CatTest$1PredatorStub.class
-LionParamsTest.class
+ParameterizedLionTest.class
 FelineTest.class
+AnimalParameterizedTest.class
+LionAlexTest.class
+AnimalTest.class
